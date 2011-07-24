@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\NamespaceConfigurationElement.cs" />
+    <Compile Include="Configuration\NamespaceConfigurationElementCollection.cs" />
     <Compile Include="ITemplateBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Razor.cs" />
@@ -49,6 +51,7 @@
     <Compile Include="RazorCompiler1.cs" />
     <Compile Include="RazorDynamicObject.cs" />
     <Compile Include="RazorHelper.cs" />
+    <Compile Include="Configuration\RazorSharpConfigurationSection.cs" />
     <Compile Include="TemplateBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

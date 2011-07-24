@@ -18,4 +18,8 @@ namespace RazorSharp {
             this.template = templateBase;
         }
     }
+
+    public class RazorHelper<T> : RazorHelper {
+        public RazorHelper(ITemplateBase templateBase) : base(templateBase) { }
+    }
 }

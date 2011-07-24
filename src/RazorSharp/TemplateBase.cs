@@ -15,7 +15,7 @@ namespace RazorSharp {
 
         public Func<string> RenderBody { get; set; }
 
-        public RazorHelper Razor { get; set; }
+        public virtual RazorHelper Razor { get; set; }
         public string Source { get; set; }
         public bool Cached { get; set; }
         public string Name { get; set; }
@@ -60,6 +60,9 @@ namespace RazorSharp {
     }
 
     public abstract class TemplateBase<T> : TemplateBase {
+
+        public new RazorHelper<T> Razor { get; set; }
+
         object model;
         public T Model {
             get { return (T)model; }

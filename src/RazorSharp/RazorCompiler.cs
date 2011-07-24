@@ -12,6 +12,7 @@ using System.Web.Razor.Generator;
 using System.Web.Razor.Parser;
 using System.Runtime.CompilerServices;
 using System.Dynamic;
+using RazorSharp.Configuration;
 
 namespace RazorSharp {
     public class RazorCompiler {
@@ -23,8 +24,9 @@ namespace RazorSharp {
             bool loaded = typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly != null;
         }
 
+        #region " Static Renders "
         public static ITemplateBase Render(string razorTemplate, string masterTemplate = null) {
-            return Render(razorTemplate, null, masterTemplate : masterTemplate);
+            return Render(razorTemplate, null, masterTemplate: masterTemplate);
         }
 
         public static ITemplateBase Render(string razorTemplate, string name, string masterTemplate = null) {
@@ -45,7 +47,7 @@ namespace RazorSharp {
                     ((TemplateBase<T>)instance).Model = model;
                 }
             }
-            
+
             instance.Execute();
 
             if (masterTemplate != null) {
@@ -54,6 +56,7 @@ namespace RazorSharp {
                 return instance;
             }
         }
+        #endregion
 
         //gets the pre-compiled template - or else compiles it
         private static ITemplateBase GetCompiledTemplate<T>(T model, string razorTemplate, string name) {
@@ -112,6 +115,13 @@ namespace RazorSharp {
             //always include this one
             host.NamespaceImports.Add("RazorSharp");
             host.NamespaceImports.Add("System");
+
+            var config = Configuration.RazorSharpConfigurationSection.GetConfiguration();
+            if (config.Namespaces != null && config.Namespaces.Count > 0) {
+                foreach (NamespaceConfigurationElement @namespace in config.Namespaces) {
+                    host.NamespaceImports.Add(@namespace.Namespace);
+                }
+            }
 
             //read web.config pages/namespaces
             //replace this later
