@@ -122,21 +122,7 @@ namespace RazorSharp {
                     host.NamespaceImports.Add(@namespace.Namespace);
                 }
             }
-
-            //read web.config pages/namespaces
-            //replace this later
-            //if (System.IO.File.Exists("\\web.config")) {
-            //    var config = WebConfigurationManager.OpenWebConfiguration("\\web.config");
-            //    var pages = config.GetSection("system.web/pages");
-            //    if (pages != null) {
-            //        System.Web.Configuration.PagesSection pageSection = (System.Web.Configuration.PagesSection)pages;
-            //        for (int i = 0; i < pageSection.Namespaces.Count; i++) {
-            //            //this automatically ignores namespaces already added
-            //            host.NamespaceImports.Add(pageSection.Namespaces[i].Namespace);
-            //        }
-            //    }
-            //}
-
+            
             CodeCompileUnit code;
             using (var reader = new StringReader(template)) {
                 var generatedCode = new RazorTemplateEngine(host).GenerateCode(reader);

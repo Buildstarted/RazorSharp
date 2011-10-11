@@ -48,7 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Razor.cs" />
     <Compile Include="RazorCompiler.cs" />
-    <Compile Include="RazorCompiler1.cs" />
     <Compile Include="RazorDynamicObject.cs" />
     <Compile Include="RazorHelper.cs" />
     <Compile Include="Configuration\RazorSharpConfigurationSection.cs" />
