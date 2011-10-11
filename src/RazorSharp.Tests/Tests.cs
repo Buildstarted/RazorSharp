@@ -10,7 +10,7 @@ namespace RazorSharp.Tests {
         string Name = "Some User";
 
         [TestMethod]
-        public void razor_parser_with_anonymouse_type() {
+        public void razor_parser_with_anonymous_type() {
             string razor = "@Model.Name";
 
             string result = RazorSharp.Razor.Parse(new { Name = Name }, razor);
