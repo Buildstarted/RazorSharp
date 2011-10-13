@@ -5,28 +5,34 @@ using System.Text;
 
 namespace RazorSharp {
     public class Razor {
+        internal static RazorCompiler compiler;
+
+        static Razor() {
+            compiler = new RazorCompiler();
+        }
+
         public static string Parse(string template) {
-            return RazorCompiler.Render(template).Result;
+            return compiler.Render(template).Result;
         }
 
         public static string Parse(string template, string name) {
-            return RazorCompiler.Render(template, name).Result;
+            return compiler.Render(template, name).Result;
         }
 
         public static string Parse(string template, string name, string masterTemplate) {
-            return RazorCompiler.Render(template, name, masterTemplate).Result;
+            return compiler.Render(template, name, masterTemplate).Result;
         }
 
         public static string Parse<T>(T model, string template) {
-            return RazorCompiler.Render<T>(model, template).Result;
+            return compiler.Render<T>(model, template).Result;
         }
 
         public static string Parse<T>(T model, string template, string name) {
-            return RazorCompiler.Render<T>(model, template, name).Result;
+            return compiler.Render<T>(model, template, name).Result;
         }
 
         public static string Parse<T>(T model, string template, string name, string masterTemplate) {
-            return RazorCompiler.Render<T>(model, template, name, masterTemplate).Result;
+            return compiler.Render<T>(model, template, name, masterTemplate).Result;
         }
 
     }

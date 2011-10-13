@@ -42,7 +42,7 @@ namespace RazorSharp.Tests {
 
             string result = RazorSharp.Razor.Parse(new { Name = Name }, razor, cacheName, null);
             Assert.AreEqual(Name, result);
-            var instance = RazorSharp.RazorCompiler.Render(new { Name = Name }, razor, cacheName, null); 
+            var instance = RazorSharp.Razor.compiler.Render(new { Name = Name }, razor, cacheName, null); 
             Assert.AreEqual(instance.Cached, true);
         }
 
@@ -56,7 +56,7 @@ namespace RazorSharp.Tests {
             Assert.IsTrue(result.Contains(Name));
             Assert.IsTrue(result.Contains("Master Page"));
 
-            var instance = RazorSharp.RazorCompiler.Render(new { Name = Name }, razor, cacheName, master);
+            var instance = RazorSharp.Razor.compiler.Render(new { Name = Name }, razor, cacheName, master);
             Assert.AreEqual(true, instance.Cached);
             Assert.AreEqual(cacheName + "_masterTemplate", instance.Name);
         }

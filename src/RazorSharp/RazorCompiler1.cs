@@ -15,37 +15,30 @@ using System.Dynamic;
 using RazorSharp.Configuration;
 
 namespace RazorSharp {
-    public class RazorCompiler {
+    public class RazorCompiler1 {
 
         //cache of already compiled types
         static ConcurrentDictionary<string, Type> cache = new ConcurrentDictionary<string, Type>();
-        private Type baseType;
 
         static RazorCompiler() {
             bool loaded = typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly != null;
         }
 
-        public RazorCompiler(): this(typeof(TemplateBase<>)) { }
-
-        public RazorCompiler(Type baseType) {
-            this.baseType = baseType;
-        }
-
         #region " Static Renders "
-        public ITemplateBase Render(string razorTemplate, string masterTemplate = null) {
+        public static ITemplateBase Render(string razorTemplate, string masterTemplate = null) {
             return Render(razorTemplate, null, masterTemplate: masterTemplate);
         }
 
-        public ITemplateBase Render(string razorTemplate, string name, string masterTemplate = null) {
+        public static ITemplateBase Render(string razorTemplate, string name, string masterTemplate = null) {
             return Render(new object(), razorTemplate, name, masterTemplate: masterTemplate);
         }
 
-        public ITemplateBase Render<T>(T model, string razorTemplate, string masterTemplate = null) {
+        public static ITemplateBase Render<T>(T model, string razorTemplate, string masterTemplate = null) {
             return Render<T>(model, razorTemplate, null, masterTemplate: masterTemplate);
         }
 
-        public ITemplateBase Render<T>(T model, string razorTemplate, string name, string masterTemplate = null) {
-            var instance = GetCompiledTemplate<T>(model, razorTemplate, name, baseType);
+        public static ITemplateBase Render<T>(T model, string razorTemplate, string name, string masterTemplate = null) {
+            var instance = GetCompiledTemplate<T>(model, razorTemplate, name);
 
             if (typeof(T) != typeof(object)) {
                 if (IsDynamicType(typeof(T))) {
@@ -66,17 +59,17 @@ namespace RazorSharp {
         #endregion
 
         //gets the pre-compiled template - or else compiles it
-        private static ITemplateBase GetCompiledTemplate<T>(T model, string razorTemplate, string name, Type baseType) {
+        private static ITemplateBase GetCompiledTemplate<T>(T model, string razorTemplate, string name) {
             Type type;
             bool isCached = false;
 
             if (name == null) {
-                type = GetCompiledType<T>(razorTemplate, baseType);
+                type = GetCompiledType<T>(razorTemplate);
             } else {
                 isCached = cache.TryGetValue(name, out type);
 
                 if (!isCached) {
-                    type = GetCompiledType<T>(razorTemplate, baseType);
+                    type = GetCompiledType<T>(razorTemplate);
                     cache[name] = type;
                 }
             }
@@ -91,7 +84,7 @@ namespace RazorSharp {
 
         //used to render the master
         private static ITemplateBase RenderMasterView<T>(T model, string template, ITemplateBase instance) {
-            var masterInstance = GetCompiledTemplate<object>(model, template, instance.Name + "_masterTemplate", instance.GetType());
+            var masterInstance = GetCompiledTemplate<object>(model, template, instance.Name + "_masterTemplate");
             //RenderBody is a func that we can overwrite
             masterInstance.RenderBody = () => {
                 return instance.Result;
@@ -102,12 +95,12 @@ namespace RazorSharp {
             return masterInstance;
         }
 
-        private static Type GetCompiledType<T>(string template, Type baseType) {
+        private static Type GetCompiledType<T>(string template) {
             var key = "c" + Guid.NewGuid().ToString("N");
 
             var parser = new HtmlMarkupParser();
 
-            //var baseType = typeof(TemplateBase<>);// IsDynamicType(typeof(T)) ? typeof(TemplateBase<>).MakeGenericType(typeof(T)) : typeof(TemplateBase<>);
+            var baseType = typeof(TemplateBase<>);// IsDynamicType(typeof(T)) ? typeof(TemplateBase<>).MakeGenericType(typeof(T)) : typeof(TemplateBase<>);
 
             var regex = new System.Text.RegularExpressions.Regex("@model.*");
             template = regex.Replace(template, "");

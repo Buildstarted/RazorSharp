@@ -44,10 +44,11 @@
   <ItemGroup>
     <Compile Include="Configuration\NamespaceConfigurationElement.cs" />
     <Compile Include="Configuration\NamespaceConfigurationElementCollection.cs" />
+    <Compile Include="RazorCompiler.cs" />
     <Compile Include="ITemplateBase.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Razor.cs" />
-    <Compile Include="RazorCompiler.cs" />
     <Compile Include="RazorDynamicObject.cs" />
     <Compile Include="RazorHelper.cs" />
     <Compile Include="Configuration\RazorSharpConfigurationSection.cs" />
