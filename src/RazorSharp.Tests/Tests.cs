@@ -31,7 +31,7 @@
             const string template = "@Model.Name";
             const string masterTemplate = "Master Page\r\n@RenderBody()";
 
-            var result = Razor.Parse(new { Name = UserName }, template, masterTemplate);
+            var result = Razor.Parse(new { Name = UserName }, template, null, masterTemplate);
             Assert.IsTrue(result.Contains(UserName));
             Assert.IsTrue(result.Contains("Master Page"));
         }

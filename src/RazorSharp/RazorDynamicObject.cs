@@ -1,51 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Dynamic;
-using System.Diagnostics;
+﻿namespace RazorSharp
+{
+    using System.Diagnostics;
+    using System.Dynamic;
 
-namespace RazorSharp {
-    public class RazorDynamicObject : DynamicObject {
+    public class RazorDynamicObject : DynamicObject
+    {
         #region Properties
+
         /// <summary>
-        /// Gets or sets the model.
+        ///     Gets or sets the model.
         /// </summary>
         public object Model { get; set; }
+
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Gets the value of the specified member.
+        ///     Gets the value of the specified member.
         /// </summary>
         /// <param name="binder">The current binder.</param>
         /// <param name="result">The member result.</param>
         /// <returns>True.</returns>
         [DebuggerStepThrough]
-        public override bool TryGetMember(GetMemberBinder binder, out object result) {
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
             var dynamicObject = Model as RazorDynamicObject;
             if (dynamicObject != null)
+            {
                 return dynamicObject.TryGetMember(binder, out result);
+            }
 
-            Type modelType = Model.GetType();
+            var modelType = Model.GetType();
             var prop = modelType.GetProperty(binder.Name);
-            if (prop == null) {
+            if (prop == null)
+            {
                 result = null;
                 return false;
             }
 
-            object value = prop.GetValue(Model, null);
-            if (value == null) {
-                result = value;
+            var value = prop.GetValue(Model, null);
+            if (value == null)
+            {
+                result = null;
                 return true;
             }
 
-            Type valueType = value.GetType();
+            var valueType = value.GetType();
             result = (RazorCompiler.IsAnonymousType(valueType))
-                         ? new RazorDynamicObject { Model = value }
-                         : value;
+                ? new RazorDynamicObject {Model = value}
+                : value;
             return true;
         }
+
         #endregion
     }
 }

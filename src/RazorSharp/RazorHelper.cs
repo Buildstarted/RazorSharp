@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace RazorSharp
+{
+    public class RazorHelper
+    {
+        private readonly ITemplateBase _template;
 
-namespace RazorSharp {
-    public class RazorHelper {
-
-        ITemplateBase template;
-
-        public string Name {
-            get {
-                return template.Name;
-            }
+        public RazorHelper(ITemplateBase templateBase)
+        {
+            _template = templateBase;
         }
 
-        public RazorHelper(ITemplateBase templateBase) {
-            this.template = templateBase;
+        public string Name
+        {
+            get { return _template.Name; }
         }
     }
 
-    public class RazorHelper<T> : RazorHelper {
-        public RazorHelper(ITemplateBase templateBase) : base(templateBase) { }
+    public class RazorHelper<T> : RazorHelper
+    {
+        public RazorHelper(ITemplateBase templateBase) : base(templateBase)
+        {
+        }
     }
 }
