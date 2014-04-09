@@ -1,9 +1,12 @@
 ﻿namespace RazorSharp
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Dynamic;
     using System.IO;
     using System.Text;
+    using System.Web;
 
     public abstract class TemplateBase : ITemplateBase
     {
@@ -59,22 +62,42 @@
             Builder.Append(@string);
         }
 
-        public virtual void WriteAttribute(string name, Tuple<string, int> prefix, Tuple<string, int> suffix, params Tuple<Tuple<string, int>, Tuple<object, int>, bool>[] values)
+        public virtual void WriteAttribute(string name, Tuple<string, int> prefix, Tuple<string, int> suffix, params object[] values)
         {
             Builder.Append(prefix.Item1);
 
-            if (values.Length > 0)
+            foreach (var value in values)
             {
-                foreach (var value in values)
+                var valueType = Helpers.TypeName(value.GetType());
+
+                Func<object, string> func;
+                if (!StringifierDict.TryGetValue(valueType, out func))
                 {
-                    Builder.Append(value.Item2.Item1);
-                    Builder.Append(' ');
+                    Debug.WriteLine("Can't find stringifier for type {0}", (object) valueType);
+                    Builder.Append("");
+                    continue;
                 }
 
-                Builder.Length -= 1;
+                Builder.Append(func(value));
             }
 
             Builder.Append(suffix.Item1);
+        }
+
+        private static readonly Dictionary<string, Func<object, string>> StringifierDict = new Dictionary<string, Func<object, string>>
+        {
+            { "Tuple<Tuple<String, Int32>, Tuple<Object, Int32>, Boolean>", t => Stringifier(t as Tuple<Tuple<string, int>, Tuple<object, int>, bool>) },
+            { "Tuple<Tuple<String, Int32>, Tuple<String, Int32>, Boolean>", t => Stringifier(t as Tuple<Tuple<string, int>, Tuple<string, int>, bool>) }
+        };
+
+        private static string Stringifier(Tuple<Tuple<string, int>, Tuple<object, int>, bool> t)
+        {
+            return HttpUtility.HtmlAttributeEncode(t.Item2.Item1.ToString());
+        }
+
+        private static string Stringifier(Tuple<Tuple<string, int>, Tuple<string, int>, bool> t)
+        {
+            return HttpUtility.HtmlAttributeEncode(t.Item2.Item1);
         }
 
         public static void WriteLiteralTo(TextWriter writer, string literal)

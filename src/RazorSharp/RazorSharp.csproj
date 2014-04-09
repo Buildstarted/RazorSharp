@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Configuration\NamespaceConfigurationElement.cs" />
     <Compile Include="Configuration\NamespaceConfigurationElementCollection.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="RazorCompiler.cs" />
     <Compile Include="ITemplateBase.cs" />
     <Compile Include="Parser.cs" />
