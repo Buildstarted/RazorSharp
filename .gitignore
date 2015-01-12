@@ -22,8 +22,9 @@ _ReSharper*/
 *.resharper
 
 ## Build Directories
-src/*/bin
-src/*/obj
+bin/
+obj/
+build/
 
 ## Visual Studio
 *.suo

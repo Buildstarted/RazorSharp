@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>RazorSharp</id>
+    <version>$version$</version>
+    <authors>Ben Dornis</authors>
+    <owners>Roy Haddad</owners>
+    <projectUrl>http://github.com/buildstarted/RazorSharp</projectUrl>
+    <description>A Razor engine</description>
+    <releaseNotes>
+    </releaseNotes>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags />
+    <dependencies />
+  </metadata>
+  <files>
+    <file src="bin\Debug\*.dll" target="lib\net45" />
+    <file src="bin\Debug\*.pdb" target="lib\net45" />
+    <file src="**\*.cs" target="src" />
+  </files>
+</package>
