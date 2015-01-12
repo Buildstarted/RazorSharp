@@ -6,7 +6,6 @@
     using System.Dynamic;
     using System.IO;
     using System.Text;
-    using System.Web;
 
     public abstract class TemplateBase : ITemplateBase
     {
@@ -92,12 +91,48 @@
 
         private static string Stringifier(Tuple<Tuple<string, int>, Tuple<object, int>, bool> t)
         {
-            return HttpUtility.HtmlAttributeEncode(t.Item2.Item1.ToString());
+            return HtmlAttributeEncode(t.Item2.Item1.ToString());
         }
 
         private static string Stringifier(Tuple<Tuple<string, int>, Tuple<string, int>, bool> t)
         {
-            return HttpUtility.HtmlAttributeEncode(t.Item2.Item1);
+            return HtmlAttributeEncode(t.Item2.Item1);
+        }
+
+        private static string HtmlAttributeEncode(string rawAttribute)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            for (int stringIndex = 0;
+                 stringIndex < rawAttribute.Length;
+                 stringIndex++)
+            {
+                char rawAttributeChar = rawAttribute[stringIndex];
+                switch (rawAttributeChar)
+                {
+                    case '"':
+
+                        builder.Append("&quot;");
+                        break;
+
+                    case '&':
+
+                        builder.Append("&amp;");
+                        break;
+
+                    case '<':
+
+                        builder.Append("&lt;");
+                        break;
+
+                    default:
+
+                        builder.Append(rawAttributeChar);
+                        break;
+                }
+            }
+
+            return builder.ToString();
         }
 
         public static void WriteLiteralTo(TextWriter writer, string literal)

@@ -11,7 +11,9 @@
     </releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags />
-    <dependencies />
+    <dependencies>
+        <dependency id="Microsoft.AspNet.Razor" version="3.2.2" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Debug\*.dll" target="lib\net45" />
